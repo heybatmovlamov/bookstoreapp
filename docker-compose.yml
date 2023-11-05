@@ -1,0 +1,16 @@
+version: '3.8'
+services:
+  db:
+    container_name: postgres
+    image: postgres:14.5
+    restart: always
+    environment:
+      - POSTGRES_URL=jdbc:postgresql://localhost:5432/postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - '5432:5432'
+    volumes:
+      - ../../docker-volumes/postgres:/var/lib/postgresql/data
+volumes:
+  postgresql:
