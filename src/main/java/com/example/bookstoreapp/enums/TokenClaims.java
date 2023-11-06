@@ -12,6 +12,6 @@ public enum TokenClaims {
     EXPIRES_AT("exp"),
     ROLES("roles"),
     USER_ID("userId"),
-    USERNAME("username");
+    EMAIL("email");
     private final String value;
 }

@@ -2,7 +2,7 @@ package com.example.bookstoreapp.controller;
 
 import com.example.bookstoreapp.dto.*;
 import com.example.bookstoreapp.enums.AuthenticationType;
-import com.example.bookstoreapp.service.AuthorService;
+import com.example.bookstoreapp.service.AuthenticationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,24 +13,24 @@ import javax.servlet.http.HttpServletRequest;
 @RequiredArgsConstructor
 public class AuthController {
 
-    public final AuthorService authorService;
+    public final AuthenticationService authenticationService;
     @PostMapping(value = "/register")
     public GenericResponse<Void> register(@RequestBody RegisterUserRequestDto requestDto){
-        return authorService.register(requestDto, AuthenticationType.AUTHOR);
+        return authenticationService.register(requestDto,requestDto.getType());
     }
 
     @PostMapping(value = "/login")
     public GenericResponse<AuthenticationResponseDto>login(@RequestBody LoginRequestDto requestDto){
-        return authorService.login(requestDto,AuthenticationType.AUTHOR);
+        return authenticationService.login(requestDto,requestDto.getType());
     }
 
     @GetMapping("/verify")
     public GenericResponse<VerifyResponseDto> verifyToken(HttpServletRequest request) {
-        return authorService.verifyToken(request, AuthenticationType.AUTHOR);
+        return authenticationService.verifyToken(request, AuthenticationType.AUTHOR);
     }
     @GetMapping("/refresh")
     public GenericResponse<RefreshResponseDto> refreshTokens(HttpServletRequest request) {
-        return authorService.refreshToken(request, AuthenticationType.AUTHOR);
+        return authenticationService.refreshToken(request, AuthenticationType.AUTHOR);
     }
 
 }

@@ -13,7 +13,7 @@ public class CustomAuthenticationProvider {
     private final AuthorAuthenticationStrategy authorAuthenticationStrategy;
     private final StudentAuthenticationStrategy studentAuthenticationStrategy;
     public AuthenticationStrategy create(AuthenticationType type){
-        return switch (AuthenticationType.AUTHOR){
+        return switch (type){
             case AUTHOR -> authorAuthenticationStrategy;
             case STUDENT -> studentAuthenticationStrategy;
         };

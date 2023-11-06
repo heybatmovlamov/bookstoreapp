@@ -56,7 +56,7 @@ public class UserPrincipal implements UserDetails {
 
     private Set<GrantedAuthority> mapToGrantedAuthority(RoleEnum role) {
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
-        grantedAuthorities.add(new SimpleGrantedAuthority(role.getName()));
+        grantedAuthorities.add(new SimpleGrantedAuthority(role.name()));
         return grantedAuthorities;
     }
 }

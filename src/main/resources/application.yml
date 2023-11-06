@@ -11,3 +11,25 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
+  liquibase:
+    change-log: classpath:db/db.changelog-master.xml
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: heybetmovlamov2005@gmail.com
+    password: gklk ohmj jylo tvnh
+    properties:
+      mail:
+        smtp:
+          auth: true
+          connectiontimeout: 5000
+          timeout: 5000
+          writetimeout: 5000
+          starttls:
+            enable: true
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+my:
+    message:
+        body: "Subscribed Info"

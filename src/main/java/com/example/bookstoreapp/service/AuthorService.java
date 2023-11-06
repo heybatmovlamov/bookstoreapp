@@ -2,8 +2,10 @@ package com.example.bookstoreapp.service;
 
 import com.example.bookstoreapp.dto.*;
 import com.example.bookstoreapp.entity.Author;
+import com.example.bookstoreapp.entity.Book;
 import com.example.bookstoreapp.enums.AuthenticationType;
 import com.example.bookstoreapp.repository.AuthorRepository;
+import com.example.bookstoreapp.repository.BookRepository;
 import com.example.bookstoreapp.security.CustomAuthenticationProvider;
 import com.example.bookstoreapp.security.authentication.AuthenticationStrategy;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -21,35 +24,21 @@ public class AuthorService {
 
     private final AuthorRepository authorRepository;
     private final CustomAuthenticationProvider customAuthenticationProvider;
+    private final BookRepository bookRepository;
 
-    public List<Author> getAllAuthors() {
-        return authorRepository.findAll();
-    }
 
-    public Author getAuthorById(Long authorId) {
-        return authorRepository.findById(authorId).orElse(null);
-    }
-    public Author createAuthor(Author author){
-        return authorRepository.save(author);
 
-    }
-    public GenericResponse<Void> register(Object requestDto, AuthenticationType type) {
-        AuthenticationStrategy authenticationStrategy = customAuthenticationProvider.create(type);
-        authenticationStrategy.register(requestDto);
-        return GenericResponse.success("SUCCESS REGISTERED");
+    public void createBook(BookRequestDto requestDto) {
+        Book book=new Book();
+        book.setName(requestDto.getName());
+        Author author = authorRepository.getAuthorById(requestDto.getAuthorId());
+        book.setAuthor(author);
+        author.setBooks(Collections.singleton(book));
+        authorRepository.save(author);
     }
 
-    public GenericResponse<AuthenticationResponseDto> login(LoginRequestDto requestDto, AuthenticationType authenticationType) {
-        AuthenticationStrategy authenticationStrategy = customAuthenticationProvider.create(authenticationType);
-        return GenericResponse.success(authenticationStrategy.login(requestDto).getData(),"SUCCESS");
-    }
-
-    public GenericResponse<VerifyResponseDto> verifyToken(HttpServletRequest request, AuthenticationType authenticationType) {
-        AuthenticationStrategy authenticationStrategy = customAuthenticationProvider.create(authenticationType);
-        return authenticationStrategy.verifyToken(request);
-    }
-    public GenericResponse<RefreshResponseDto> refreshToken(HttpServletRequest request, AuthenticationType authenticationType) {
-        AuthenticationStrategy authenticationStrategy = customAuthenticationProvider.create(authenticationType);
-        return GenericResponse.success(authenticationStrategy.refreshToken(request));
+    public void deleteBook(Long bookId) {
+        Book book = bookRepository.findById(bookId).get();
+        bookRepository.delete(book);
     }
 }

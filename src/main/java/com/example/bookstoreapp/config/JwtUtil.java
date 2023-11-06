@@ -8,14 +8,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpHeaders;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.apache.commons.lang3.time.DateUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.security.Key;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
@@ -23,7 +21,7 @@ import java.util.UUID;
 @Slf4j
 public class JwtUtil {
     private static final Logger LOG = LogManager.getLogger(JwtUtil.class);
-    private static final String SECRET_KEY = "yourSecretKey"; // Replace with your secret key
+    private static final String SECRET_KEY = "4sgu1vg*u*ad90lve6b#v#eojjk@)^oat!tawp1f0#+^fw#-(y"; // Replace with your secret key
     private static final int JWT_EXPIRATION = 604800000; // Token expiration time in milliseconds (7 days)
 
     public String generateToken(Map<String,Object> claims) {
@@ -46,14 +44,11 @@ public class JwtUtil {
         log.info("Generated sign-in key: " + signInKey);
         return signInKey;
     }
-//    public String getUsernameFromJwtToken(String token) {
-//        Claims claims = Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
-//        return claims.getSubject();
-//    }
+
 
     public boolean validateToken(String token) {
         try {
-            Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token);
+            Jwts.parserBuilder().setSigningKey(Keys.hmacShaKeyFor(SECRET_KEY.getBytes())).build().parseClaimsJws(token);
             return true;
         } catch (SignatureException e) {
             LOG.error("Invalid JWT signature: {}", e.getMessage());
@@ -74,7 +69,7 @@ public class JwtUtil {
     }
 
     private Claims extractClaims(String token) {
-        return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
+        return Jwts.parserBuilder().setSigningKey(Keys.hmacShaKeyFor(SECRET_KEY.getBytes())).build().parseClaimsJws(token).getBody();
     }
 
     private boolean isTokenExpired(String token) {
@@ -82,7 +77,8 @@ public class JwtUtil {
     }
 
     public String extractUsername(String token) {
-        return extractClaims(token).getSubject();
+        Claims claims= (Jwts.parserBuilder().setSigningKey(getSignInKey()).build()).parseClaimsJws(token).getBody();
+        return claims.get(TokenClaims.EMAIL.getValue()).toString();
     }
     public String getJWTFromRequest(HttpServletRequest request) {
         String bearerToken = request.getHeader(HttpHeaders.AUTHORIZATION);
@@ -95,7 +91,7 @@ public class JwtUtil {
         try {
             Claims claims = Jwts.parserBuilder().setSigningKey(getSignInKey()).build().parseClaimsJws(token).getBody();
 
-            String username = claims.get(TokenClaims.USERNAME.getValue()).toString();
+            String username = claims.get(TokenClaims.EMAIL.getValue()).toString();
             log.info("Extracted username from token: " + username);
             return username;
         } catch (JwtException exception) {

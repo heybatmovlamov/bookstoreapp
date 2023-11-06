@@ -11,8 +11,8 @@ import javax.validation.constraints.NotEmpty;
 @Setter
 public class LoginRequestDto {
 
-    public LoginRequestDto(@NotNull String username, @NotNull String password) {
-        this.username = username;
+    public LoginRequestDto(@NotNull String email, @NotNull String password) {
+        this.email = email;
         this.password = password;
     }
     public LoginRequestDto(){
@@ -20,8 +20,8 @@ public class LoginRequestDto {
     }
 
 
-    @NotEmpty(message = "username cant be empty")
-    private String username;
+    @NotEmpty(message = "email cant be empty")
+    private String email;
 
 
 
