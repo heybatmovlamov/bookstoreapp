@@ -1,6 +1,7 @@
 package com.example.bookstoreapp.entity;
 
 
+import com.example.bookstoreapp.enums.RoleEnum;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

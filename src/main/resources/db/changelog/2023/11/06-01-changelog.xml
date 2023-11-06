@@ -5,7 +5,7 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd"
         objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
-    <changeSet id="1699259972990-1" author="heybatmovlamov (generated)">
+    <changeSet id="1699300323344-1" author="heybatmovlamov (generated)">
         <createTable tableName="author">
             <column name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="pk_author"/>
@@ -16,10 +16,11 @@
             </column>
             <column name="email" type="VARCHAR(255)"/>
             <column name="password" type="VARCHAR(255)"/>
-            <column name="role" type="SMALLINT"/>
+            <column name="role" type="VARCHAR(255)"/>
+            <column name="book_id" type="BIGINT"/>
         </createTable>
     </changeSet>
-    <changeSet id="1699259972990-2" author="heybatmovlamov (generated)">
+    <changeSet id="1699300323344-2" author="heybatmovlamov (generated)">
         <createTable tableName="book">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="pk_book"/>
@@ -32,7 +33,7 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet id="1699259972990-3" author="heybatmovlamov (generated)">
+    <changeSet id="1699300323344-3" author="heybatmovlamov (generated)">
         <createTable tableName="student">
             <column name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="pk_student"/>
@@ -43,19 +44,28 @@
             </column>
             <column name="email" type="VARCHAR(255)"/>
             <column name="password" type="VARCHAR(255)"/>
-            <column name="role" type="SMALLINT"/>
+            <column name="role" type="VARCHAR(255)"/>
+            <column name="book_id" type="BIGINT"/>
             <column name="subscriber_id" type="BIGINT"/>
         </createTable>
     </changeSet>
-    <changeSet id="1699259972990-4" author="heybatmovlamov (generated)">
+    <changeSet id="1699300323344-4" author="heybatmovlamov (generated)">
+        <addForeignKeyConstraint baseColumnNames="book_id" baseTableName="author" constraintName="FK_AUTHOR_ON_BOOK"
+                                 referencedColumnNames="id" referencedTableName="book"/>
+    </changeSet>
+    <changeSet id="1699300323344-5" author="heybatmovlamov (generated)">
         <addForeignKeyConstraint baseColumnNames="author_id" baseTableName="book" constraintName="FK_BOOK_ON_AUTHOR"
                                  referencedColumnNames="id" referencedTableName="author"/>
     </changeSet>
-    <changeSet id="1699259972990-5" author="heybatmovlamov (generated)">
+    <changeSet id="1699300323344-6" author="heybatmovlamov (generated)">
         <addForeignKeyConstraint baseColumnNames="student_id" baseTableName="book" constraintName="FK_BOOK_ON_STUDENT"
                                  referencedColumnNames="id" referencedTableName="student"/>
     </changeSet>
-    <changeSet id="1699259972990-6" author="heybatmovlamov (generated)">
+    <changeSet id="1699300323344-7" author="heybatmovlamov (generated)">
+        <addForeignKeyConstraint baseColumnNames="book_id" baseTableName="student" constraintName="FK_STUDENT_ON_BOOK"
+                                 referencedColumnNames="id" referencedTableName="book"/>
+    </changeSet>
+    <changeSet id="1699300323344-8" author="heybatmovlamov (generated)">
         <addForeignKeyConstraint baseColumnNames="subscriber_id" baseTableName="student"
                                  constraintName="FK_STUDENT_ON_SUBSCRIBER" referencedColumnNames="id"
                                  referencedTableName="author"/>

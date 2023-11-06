@@ -31,11 +31,11 @@ public abstract class User {
     private Book book;
 
     @Transactional
-    public Map<String,Object> getClaims(){
-        Map<String,Object>claims=new HashMap<>();
-        claims.put(TokenClaims.USER_ID.getValue(),this.id);
-        claims.put(TokenClaims.EMAIL.getValue(),this.email);
-        claims.put(TokenClaims.ROLES.getValue(),this.role);
+    public Map<String, Object> getClaims() {
+        Map<String, Object> claims = new HashMap<>();
+        claims.put(TokenClaims.USER_ID.getValue(), this.id);
+        claims.put(TokenClaims.EMAIL.getValue(), this.email);
+        claims.put(TokenClaims.ROLES.getValue(), this.role);
         return claims;
     }
 }
